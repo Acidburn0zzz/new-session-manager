@@ -162,12 +162,13 @@ to. Some unique component may be required to prevent collisions.
 ==== Session Root and Session Directories
 
 Client programs MUST NOT handle the following themselves. This section is background-information.
-See also: link:https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html[XDG Base Directory Specifications]
+
+NSM follows the link:https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html[XDG Base Directory Specifications]
 
 All existing and new sessions are directories below the session-root, which defaults to
 `$XDG_DATA_HOME/nsm/`, which usually results in `$HOME/.local/share/nsm/`.
 
-Each session directory contains a file `session.nsm`. Each client on one line `name:executable:UID\n`
+Each session directory contains a file `session.nsm` with one client per line `name:executable:UID\n`
 For example:
 ```
 JACKPatch:jackpatch:nBEIQ
@@ -190,7 +191,7 @@ manager or a GUI (while the session is not open).
 The project_name from `/nsm/server/new s:project_name` accepts the format `a/b/c/d`.
 
 Any session itself MUST be a "leaf" in this directory tree. A session MUST NOT contain further
-session subdirectories, that is any directory that contains a file `session.nsm` is the final
+session subdirectories: any directory that contains a file `session.nsm` is the final
 element in the hierarchy.
 
 ===== Lockfiles
@@ -206,9 +207,15 @@ The lockfile is named after the simple session name combined with a unique ID to
 (see below).
 
 The lockfile contains, on separate lines:
-* The path of the session, including the root-dir. (which can be overriden by `nsmd --session-root`, allowing two sessions of the same basic name in different roots).
-* the OSC URL of the server that runs this session, the same as `$NSM_URL`. For example `osc.udp://myuser.localdomain:11287/`.
 
+* The absolute path to the session, including the root-dir, which could be overriden by `nsmd --session-root`, allowing two sessions of the same basic name in different roots.
+* the OSC URL of the server that runs this session, the same as `$NSM_URL`.
+
+Example:
+```
+/home/johann/.local/share/nsm/cantatas/easter1751
+osc.udp://myuser.localdomain:11287/
+```
 
 == NSM OSC Protocol
 
